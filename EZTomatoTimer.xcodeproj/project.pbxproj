@@ -13,6 +13,7 @@
 		5A5B8F2F1DD6536B007AC305 /* EZTomatoTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5B8F2E1DD6536B007AC305 /* EZTomatoTimerTests.swift */; };
 		5A5B8F3A1DD6536B007AC305 /* EZTomatoTimerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5B8F391DD6536B007AC305 /* EZTomatoTimerUITests.swift */; };
 		5A5B8F481DD656C1007AC305 /* StatusBarButtonImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A5B8F471DD656C1007AC305 /* StatusBarButtonImage@2x.png */; };
+		5A5B8F4A1DD6581A007AC305 /* EZStatusMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5B8F491DD6581A007AC305 /* EZStatusMenuController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +46,7 @@
 		5A5B8F391DD6536B007AC305 /* EZTomatoTimerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EZTomatoTimerUITests.swift; sourceTree = "<group>"; };
 		5A5B8F3B1DD6536B007AC305 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5A5B8F471DD656C1007AC305 /* StatusBarButtonImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "StatusBarButtonImage@2x.png"; sourceTree = "<group>"; };
+		5A5B8F491DD6581A007AC305 /* EZStatusMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EZStatusMenuController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +99,7 @@
 			children = (
 				5A5B8F471DD656C1007AC305 /* StatusBarButtonImage@2x.png */,
 				5A5B8F1E1DD6536B007AC305 /* AppDelegate.swift */,
+				5A5B8F491DD6581A007AC305 /* EZStatusMenuController.swift */,
 				5A5B8F201DD6536B007AC305 /* Assets.xcassets */,
 				5A5B8F221DD6536B007AC305 /* MainMenu.xib */,
 				5A5B8F251DD6536B007AC305 /* Info.plist */,
@@ -260,6 +263,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5A5B8F1F1DD6536B007AC305 /* AppDelegate.swift in Sources */,
+				5A5B8F4A1DD6581A007AC305 /* EZStatusMenuController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

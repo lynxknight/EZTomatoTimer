@@ -12,18 +12,19 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="EZTomatoTimer" customModuleProvider="target">
+        <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="EZTomatoTimer" customModuleProvider="target"/>
+        <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
+        <customObject id="LIT-SS-6CK" customClass="EZStatusMenuController" customModule="EZTomatoTimer" customModuleProvider="target">
             <connections>
-                <outlet property="statusMenu" destination="bvD-B9-bwZ" id="pNN-3x-W3f"/>
+                <outlet property="statusMenu" destination="bvD-B9-bwZ" id="rgX-mc-720"/>
             </connections>
         </customObject>
-        <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
         <menu id="bvD-B9-bwZ">
             <items>
                 <menuItem title="Quit" id="tF3-VD-Ihb">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="quitMenuItemClicked:" target="Voe-Tx-rLC" id="OYN-ly-UkM"/>
+                        <action selector="quitMenuItemClicked:" target="LIT-SS-6CK" id="7MG-qK-Oo3"/>
                     </connections>
                 </menuItem>
             </items>
