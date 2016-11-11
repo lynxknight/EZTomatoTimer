@@ -21,6 +21,23 @@
         </customObject>
         <menu id="bvD-B9-bwZ">
             <items>
+                <menuItem title="25:00" id="hPC-dd-eHF">
+                    <attributedString key="attributedTitle"/>
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                </menuItem>
+                <menuItem title="Pause" id="IO1-wj-91H">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                </menuItem>
+                <menuItem title="Pomodoro" id="sTs-D4-1Gn">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                </menuItem>
+                <menuItem title="Chill" id="bjt-Dh-XU9">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                </menuItem>
+                <menuItem title="Break" id="fe2-Kj-Sxz">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="ZYC-Sl-lWe"/>
                 <menuItem title="Quit" id="tF3-VD-Ihb">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
