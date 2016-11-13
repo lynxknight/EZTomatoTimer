@@ -16,7 +16,9 @@
         <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
         <customObject id="LIT-SS-6CK" customClass="EZStatusMenuController" customModule="EZTomatoTimer" customModuleProvider="target">
             <connections>
+                <outlet property="pauseItem" destination="IO1-wj-91H" id="6Xq-bA-EdY"/>
                 <outlet property="statusMenu" destination="bvD-B9-bwZ" id="rgX-mc-720"/>
+                <outlet property="timingItem" destination="hPC-dd-eHF" id="AfL-GK-83J"/>
             </connections>
         </customObject>
         <menu id="bvD-B9-bwZ">
@@ -27,6 +29,9 @@
                 </menuItem>
                 <menuItem title="Pause" id="IO1-wj-91H">
                     <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="pauseItemClicked:" target="LIT-SS-6CK" id="Aca-nd-VOE"/>
+                    </connections>
                 </menuItem>
                 <menuItem title="Pomodoro" id="sTs-D4-1Gn">
                     <modifierMask key="keyEquivalentModifierMask"/>
