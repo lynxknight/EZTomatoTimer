@@ -35,12 +35,21 @@
                 </menuItem>
                 <menuItem title="Pomodoro" id="sTs-D4-1Gn">
                     <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="pomodoroClicked:" target="LIT-SS-6CK" id="5ah-Ls-keU"/>
+                    </connections>
                 </menuItem>
                 <menuItem title="Chill" id="bjt-Dh-XU9">
                     <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="chillClicked:" target="LIT-SS-6CK" id="YY9-hI-xva"/>
+                    </connections>
                 </menuItem>
                 <menuItem title="Break" id="fe2-Kj-Sxz">
                     <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="breakClicked:" target="LIT-SS-6CK" id="zYt-dA-8Xz"/>
+                    </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="ZYC-Sl-lWe"/>
                 <menuItem title="Quit" id="tF3-VD-Ihb">
