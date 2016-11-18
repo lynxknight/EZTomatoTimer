@@ -10,20 +10,20 @@ import Cocoa
 
 var activity: NSObjectProtocol?
 
+struct Interval {
+    static let pomodoro = 25 * 60.0
+    static let chill = 5 * 60.0
+    static let rest = 10 * 60.0
+    static let debug = 5.0 * 100
+    static let no = 0.0
+}
+
 class EZStatusMenuController: NSObject {
     let statusItem = NSStatusBar.system().statusItem(withLength: NSVariableStatusItemLength)
     var pausableTimer: EZPausableTimer?
     var statusUpdateTimer: Timer?
     
-    // Intervals TODO: Struct?
-    struct Interval {
-        static let pomodoro = 25 * 60.0
-        static let chill = 5 * 60.0
-        static let rest = 10 * 60.0
-        static let debug = 5.0 * 100
-        static let no = 0.0
-    }
-    
+
     @IBOutlet weak var statusMenu: NSMenu!
     @IBOutlet weak var timingItem: NSMenuItem!
     @IBOutlet weak var pauseItem: NSMenuItem!
@@ -50,16 +50,26 @@ class EZStatusMenuController: NSObject {
     
     @IBAction func pomodoroClicked(_ sender: NSMenuItem) {
         self.pausableTimer = EZPausableTimer(
-            timeInterval: Interval.debug,
+            timeInterval: Interval.pomodoro,
             completion: {
             () -> Void in self.showNotification(message: "pomodoro")
         })
     }
     
     @IBAction func chillClicked(_ sender: NSMenuItem) {
+        self.pausableTimer = EZPausableTimer(
+            timeInterval: Interval.chill,
+            completion: {
+                () -> Void in self.showNotification(message: "chill")
+        })
     }
     
     @IBAction func breakClicked(_ sender: NSMenuItem) {
+        self.pausableTimer = EZPausableTimer(
+            timeInterval: Interval.rest,
+            completion: {
+                () -> Void in self.showNotification(message: "rest")
+        })
     }
 
     override func awakeFromNib() {
@@ -107,8 +117,8 @@ class EZStatusMenuController: NSObject {
     
     func showNotification(message: String) {
         let notification = NSUserNotification()
-        notification.title = "Your \(message) has ended, take a break"
-        notification.informativeText = "It's Nth in a row, chill a bit!"
+        notification.title = "\(message) ended"
+        notification.informativeText = "Useful information here later!"
         notification.soundName = NSUserNotificationDefaultSoundName
         NSUserNotificationCenter.default.scheduleNotification(notification)
     }
