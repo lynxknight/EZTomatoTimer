@@ -12,8 +12,7 @@ class EZPausableTimer: NSObject {
     var timer: Timer?
     var completion: (() -> Void)
     var paused = false
-    var timeRemaining: TimeInterval = 0.0
-    var timeToPass: TimeInterval
+    var timeRemaining: TimeInterval
     var isValid = true
     
     private var latestStartDate: Date
@@ -25,9 +24,9 @@ class EZPausableTimer: NSObject {
     init(timeInterval: TimeInterval, completion: @escaping () -> Void) {
         self.latestStartDate = Date()
         self.completion = completion
-        self.timeToPass = timeInterval
+        self.timeRemaining = timeInterval
         super.init()
-        self.timer = self.startTimer(timeInterval: self.timeToPass)
+        self.timer = self.startTimer(timeInterval: self.timeRemaining)
     }
     
     deinit {
@@ -41,7 +40,7 @@ class EZPausableTimer: NSObject {
         print("EZPausableTimer] pause() called stopTimer()")
         self.paused = true
         print("EZPausableTimer] pause() self.paused set to True")
-        self.timeRemaining = self.timeToPass - Date().timeIntervalSince(self.latestStartDate)
+        self.timeRemaining -= Date().timeIntervalSince(self.latestStartDate)
         print("EZPausableTimer] pause() self.timeRemaining calculated, result = \(self.timeRemaining)")
     }
     
@@ -64,7 +63,7 @@ class EZPausableTimer: NSObject {
         if self.paused {
             return self.timeRemaining
         }
-        return self.timeToPass - Date().timeIntervalSince(self.latestStartDate)
+        return self.timeRemaining - Date().timeIntervalSince(self.latestStartDate)
     }
     
     func timerEnded() {
