@@ -14,6 +14,7 @@ class EZPausableTimer: NSObject {
     var paused = false
     var timeRemaining: TimeInterval = 0.0
     var timeToPass: TimeInterval
+    var isValid = true
     
     private var latestStartDate: Date
     
@@ -26,57 +27,77 @@ class EZPausableTimer: NSObject {
         self.completion = completion
         self.timeToPass = timeInterval
         super.init()
+        self.timer = self.startTimer(timeInterval: self.timeToPass)
     }
     
     deinit {
         self.timer?.invalidate()
     }
     
-    func start() {
-        print("Called public start")
-        self.timer = self.startTimer(timeInterval: self.timeToPass)
-    }
-    
     func pause() {
+        print("EZPausableTimer] pause() called")
+        guard let _ = self.timer else { print("NO TIMER ON PAUSE"); return }
         self.stopTimer()
+        print("EZPausableTimer] pause() called stopTimer()")
         self.paused = true
+        print("EZPausableTimer] pause() self.paused set to True")
         self.timeRemaining = self.timeToPass - Date().timeIntervalSince(self.latestStartDate)
+        print("EZPausableTimer] pause() self.timeRemaining calculated, result = \(self.timeRemaining)")
     }
     
     func resume() {
+        print("EZPausableTimer] resume() called")
+        guard self.timer == nil else { print("EZPausableTimer] resume() has no timer, returning"); return }  // If there's a timer, then we're not paused. TODO
         guard self.paused else {
             print("Timer is not paused")
             return
         }
         self.paused = false
+        print("EZPausableTimer] resume() self.pause set to False")
         self.latestStartDate = Date()
+        print("EZPausableTimer] resume() self.latestStartDate refreshed")
+        print("EZPausableTimer] resume() running new timer, with time remaining: \(self.timeRemaining)")
         self.timer = self.startTimer(timeInterval: self.timeRemaining)
+    }
+    
+    func poll() -> TimeInterval {
+        if self.paused {
+            return self.timeRemaining
+        }
+        return self.timeToPass - Date().timeIntervalSince(self.latestStartDate)
     }
     
     func timerEnded() {
         print("Timer fired")
         self.timer?.invalidate()  // TODO: investigate on this
         self.timer = nil
+        self.isValid = false
         self.completion()
     }
     
     // Timer heplers
     private func startTimer(timeInterval: TimeInterval) -> Timer {
+        print("EZPausableTimer] startTimer() call")
         guard self.timer == nil else {
           fatalError("Started timer while having existing")
         }
         let timer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(timerEnded), userInfo: nil, repeats: false)
+        print("EZPausableTimer] startTimer() timer created")
         RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
+        print("EZPausableTimer] startTimer() timer scheduled to loop")
+        print("EZPausableTimer] startTimer() timer returned")
         return timer
     }
     
     private func stopTimer() {
+        print("EZPausableTimer] stopTimer() call")
         guard let timer = self.timer else {
             print("Timer already paused/destroyed")
             return // If there's no timer -- there's nothing to stop
         }
         timer.invalidate()
         self.timer = nil
+        print("EZPausableTimer] stopTimer() self.timer invalidated and set to nil")
     }
     
 }

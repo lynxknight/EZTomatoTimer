@@ -52,8 +52,7 @@
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="ZYC-Sl-lWe"/>
-                <menuItem title="Quit" id="tF3-VD-Ihb">
-                    <modifierMask key="keyEquivalentModifierMask"/>
+                <menuItem title="Quit" keyEquivalent="q" id="tF3-VD-Ihb">
                     <connections>
                         <action selector="quitMenuItemClicked:" target="LIT-SS-6CK" id="7MG-qK-Oo3"/>
                     </connections>

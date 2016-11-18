@@ -8,19 +8,21 @@
 
 import Cocoa
 
+var activity: NSObjectProtocol?
+
 class EZStatusMenuController: NSObject {
     let statusItem = NSStatusBar.system().statusItem(withLength: NSVariableStatusItemLength)
-    var timer: Timer?
-    var destinationDate: Date?
-    var stoppedDate: Date?
+    var pausableTimer: EZPausableTimer?
+    var statusUpdateTimer: Timer?
     
     // Intervals TODO: Struct?
-    let pomodoroInterval = 25 * 60.0
-    let chillInterval = 5 * 60.0
-    let restInterval = 10 * 60.0
-    let debugInterval = 5.0
-
-    var remainingTime: TimeInterval = 0.0
+    struct Interval {
+        static let pomodoro = 25 * 60.0
+        static let chill = 5 * 60.0
+        static let rest = 10 * 60.0
+        static let debug = 5.0 * 100
+        static let no = 0.0
+    }
     
     @IBOutlet weak var statusMenu: NSMenu!
     @IBOutlet weak var timingItem: NSMenuItem!
@@ -32,19 +34,26 @@ class EZStatusMenuController: NSObject {
     }
     
     @IBAction func pauseItemClicked(_ sender: NSMenuItem) {
-        if let _ = self.timer {
-            // If there's an instance, then timer is running
-            self.stopTimer()
-            sender.title = "Continue"
-        } else {
-            // If there's no instance, them we were paused and should continue
-            self.timer = self.startTimer()
+        guard let pausableTimer = self.pausableTimer else {
+            print("For some reason there's no timer and user was able to call pauseItemClicked")
+            fatalError()
+        }
+        if pausableTimer.paused {
+            pausableTimer.resume()
             sender.title = "Pause"
+        } else {
+            pausableTimer.pause()
+            sender.title = "Continue"
         }
         self.statusMenu.itemChanged(sender)
     }
     
     @IBAction func pomodoroClicked(_ sender: NSMenuItem) {
+        self.pausableTimer = EZPausableTimer(
+            timeInterval: Interval.debug,
+            completion: {
+            () -> Void in self.showNotification(message: "pomodoro")
+        })
     }
     
     @IBAction func chillClicked(_ sender: NSMenuItem) {
@@ -55,52 +64,36 @@ class EZStatusMenuController: NSObject {
 
     override func awakeFromNib() {
         print("EZStatusMenuController awaken from nib")
+        // Setup process info
+        activity = ProcessInfo().beginActivity(
+            options: ProcessInfo.ActivityOptions.userInitiated, reason: "I want my timer to work properly")
+        // Setup icon
         let icon = NSImage(named: "StatusBarButtonImage")
         icon?.isTemplate = true
         self.statusItem.image = icon
+        // Set menu to our class
         self.statusItem.menu = self.statusMenu
-        self.startCountdown(timeInterval: self.debugInterval)
-    }
-
-
-    func startCountdown(timeInterval ti: TimeInterval) {
-        // Set destination date
-        self.destinationDate = Date(timeInterval: ti, since: Date())
-        self.timer = self.startTimer()
+        // Init refresher loop
+        self.statusUpdateTimer = Timer.scheduledTimer(
+            timeInterval: 0.2,
+            target: self,
+            selector: #selector(statusUpdateTick),
+            userInfo: nil,
+            repeats: true
+        )
+        RunLoop.main.add(self.statusUpdateTimer!, forMode: RunLoopMode.commonModes)
     }
     
-    func timerTick() {
-        let formattedTime: String
-        self.remainingTime = self.destinationDate!.timeIntervalSince(Date())
-        if self.remainingTime > 0 {
-            formattedTime = self.formatTimeInterval(ti: self.remainingTime)
+    func statusUpdateTick() {
+        let timeRemaining: TimeInterval
+        
+        if self.pausableTimer?.isValid == true {
+            timeRemaining = self.pausableTimer!.poll()
         } else {
-            // TODO: Notificate
-            // TODO: Remove ability to Pause
-            formattedTime = self.formatTimeInterval(ti: 0.0)
-            self.stopTimer()
+            timeRemaining = Interval.no
         }
-        self.timingItem.title = formattedTime
+        self.timingItem.title = self.formatTimeInterval(ti: timeRemaining)
         self.statusMenu.itemChanged(self.timingItem)
-        print("timingItem changed... \(self.remainingTime)")
-    }
-
-    // Timer heplers
-    func startTimer() -> Timer {
-        if let oldTimer = self.timer {
-            return oldTimer // If there's a timer, return it
-        }
-        let timer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(timerTick), userInfo: nil, repeats: true)
-        RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
-        return timer
-    }
-    
-    func stopTimer() {
-        guard let timer = self.timer else {
-            return // If there's no timer -- there's nothing to stop
-        }
-        timer.invalidate()
-        self.timer = nil
     }
     
     func formatTimeInterval(ti: TimeInterval) -> String {
@@ -110,5 +103,13 @@ class EZStatusMenuController: NSObject {
             interval / 60,       // minutes
             interval % 60        // seconds
         )
+    }
+    
+    func showNotification(message: String) {
+        let notification = NSUserNotification()
+        notification.title = "Your \(message) has ended, take a break"
+        notification.informativeText = "It's Nth in a row, chill a bit!"
+        notification.soundName = NSUserNotificationDefaultSoundName
+        NSUserNotificationCenter.default.scheduleNotification(notification)
     }
 }
