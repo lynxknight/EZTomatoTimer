@@ -38,14 +38,13 @@ class EZStatusMenuController: NSObject {
             print("For some reason there's no timer and user was able to call pauseItemClicked")
             fatalError()
         }
+        // TODO: Add toggle to pausableTimer
         if pausableTimer.paused {
             pausableTimer.resume()
-            sender.title = "Pause"
         } else {
             pausableTimer.pause()
-            sender.title = "Continue"
         }
-        self.statusMenu.itemChanged(sender)
+        self.updatePauseItemAccordingToTimer()
     }
     
     @IBAction func pomodoroClicked(_ sender: NSMenuItem) {
@@ -54,6 +53,8 @@ class EZStatusMenuController: NSObject {
             completion: {
             () -> Void in self.showNotification(message: "pomodoro")
         })
+        // TODO: remove updatePauseItemAccordingToTimer copypaste
+        self.updatePauseItemAccordingToTimer()
     }
     
     @IBAction func chillClicked(_ sender: NSMenuItem) {
@@ -62,6 +63,7 @@ class EZStatusMenuController: NSObject {
             completion: {
                 () -> Void in self.showNotification(message: "chill")
         })
+        self.updatePauseItemAccordingToTimer()
     }
     
     @IBAction func breakClicked(_ sender: NSMenuItem) {
@@ -70,6 +72,7 @@ class EZStatusMenuController: NSObject {
             completion: {
                 () -> Void in self.showNotification(message: "rest")
         })
+        self.updatePauseItemAccordingToTimer()
     }
 
     override func awakeFromNib() {
@@ -113,6 +116,15 @@ class EZStatusMenuController: NSObject {
             interval / 60,       // minutes
             interval % 60        // seconds
         )
+    }
+    
+    func updatePauseItemAccordingToTimer() {
+        if self.pausableTimer?.paused == true {
+            self.pauseItem.title = "Pause"
+        } else {
+            self.pauseItem.title = "Continue"
+        }
+        self.statusMenu.itemChanged(self.pauseItem)
     }
     
     func showNotification(message: String) {
