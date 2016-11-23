@@ -120,9 +120,9 @@ class EZStatusMenuController: NSObject {
     
     func updatePauseItemAccordingToTimer() {
         if self.pausableTimer?.paused == true {
-            self.pauseItem.title = "Pause"
-        } else {
             self.pauseItem.title = "Continue"
+        } else {
+            self.pauseItem.title = "Pause"
         }
         self.statusMenu.itemChanged(self.pauseItem)
     }
